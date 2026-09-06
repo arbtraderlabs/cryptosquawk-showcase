@@ -1,0 +1,287 @@
+{
+  "_comment": "Synthetic demo data for CryptoSquawk showcase. All values are fabricated for demonstration purposes only. No real market data, no real accounts, no trading recommendations.",
+  "meta": {
+    "product": "CryptoSquawk",
+    "vendor": "ArbTrader Labs",
+    "dataType": "synthetic",
+    "generatedFor": "public-showcase"
+  },
+  "pipelineStages": [
+    { "id": "ingest",     "label": "Ingest",        "detail": "Market ticks & news adapters normalize onto the event bus" },
+    { "id": "normalize",  "label": "Normalize",     "detail": "Schema validation, dedup, symbol mapping" },
+    { "id": "features",   "label": "Feature Extract","detail": "Rolling stats, liquidity & dispersion features computed" },
+    { "id": "infer",      "label": "Model Infer",   "detail": "Shadow + live model ensembles score the event" },
+    { "id": "guardrail",  "label": "Guardrail",     "detail": "Compliance, confidence threshold & quiet-hours checks" },
+    { "id": "synth",      "label": "Squawk Synth",  "detail": "Natural-language commentary generated from model output" },
+    { "id": "deliver",    "label": "Deliver",       "detail": "Published to the live squawk stream & subscribers" }
+  ],
+  "showcase": {
+    "loopMs": 54000,
+    "order": ["normal", "whale", "volatile", "suppressed", "degraded"]
+  },
+  "scenarios": {
+    "normal": {
+      "id": "normal",
+      "label": "Normal Market",
+      "tagline": "Steady state — routine coverage across majors",
+      "accent": "cyan",
+      "durationMs": 11000,
+      "systemHealth": {
+        "status": "healthy",
+        "uptimePct": 99.98,
+        "cpuPct": 34,
+        "memPct": 41,
+        "queueDepth": 12,
+        "instances": 6,
+        "errorRatePct": 0.02
+      },
+      "shadowHealth": {
+        "liveStatus": "healthy",
+        "shadowStatus": "healthy",
+        "parityPct": 99.4,
+        "driftScore": 0.03,
+        "replayLagMs": 180,
+        "lastSyncSec": 4
+      },
+      "funnel": { "ingested": 1200, "filtered": 900, "scored": 850, "aboveThreshold": 300, "published": 280, "delivered": 278 },
+      "observability": { "rps": 42, "errorRatePct": 0.03, "p50Ms": 118, "p95Ms": 310, "p99Ms": 480, "activeTraces": 24,
+        "logs": [
+          "adapter.coinbase: heartbeat ok (seq=88213)",
+          "guardrail: threshold=0.65 evaluated 850 events",
+          "synth: 280 squawks generated, avg 62 tokens"
+        ] },
+      "cost": { "perSquawkUsd": 0.0041, "tokensPerSquawk": 62, "monthlyProjectionUsd": 118.40, "trend": [0.0038, 0.0040, 0.0039, 0.0041, 0.0041, 0.0040] },
+      "events": [
+        { "t": 300,  "type": "tick",  "symbol": "BTC-USD", "text": "BTC-USD tick $63,412.10 (+0.12%)", "severity": "info" },
+        { "t": 1400, "type": "tick",  "symbol": "ETH-USD", "text": "ETH-USD tick $3,041.55 (-0.05%)", "severity": "info" },
+        { "t": 2600, "type": "news",  "symbol": "MKT",     "text": "News: Exchange maintenance window scheduled, low impact expected", "severity": "info" },
+        { "t": 3900, "type": "tick",  "symbol": "SOL-USD", "text": "SOL-USD tick $141.22 (+0.31%)", "severity": "info" },
+        { "t": 5200, "type": "flow",  "symbol": "BTC-USD", "text": "On-chain: routine exchange inflow, 210 BTC", "severity": "info" },
+        { "t": 6500, "type": "tick",  "symbol": "BTC-USD", "text": "BTC-USD tick $63,455.80 (+0.19%)", "severity": "info" },
+        { "t": 7800, "type": "tick",  "symbol": "ETH-USD", "text": "ETH-USD tick $3,048.10 (+0.16%)", "severity": "info" },
+        { "t": 9100, "type": "news",  "symbol": "MKT",     "text": "News: Macro calendar quiet, no scheduled releases", "severity": "info" },
+        { "t": 10200,"type": "tick",  "symbol": "SOL-USD", "text": "SOL-USD tick $141.98 (+0.54%)", "severity": "info" }
+      ],
+      "squawks": [
+        { "t": 900,  "id": "n1", "symbol": "BTC-USD", "confidence": 0.71, "suppressed": false,
+          "text": "BTC holding above short-term support near $63.1k amid contracting realized volatility.",
+          "latencyMs": 402, "costUsd": 0.0040,
+          "trace": [ {"stage":"ingest","ms":18},{"stage":"normalize","ms":9},{"stage":"features","ms":41},{"stage":"infer","ms":210},{"stage":"guardrail","ms":12},{"stage":"synth","ms":98},{"stage":"deliver","ms":14} ] },
+        { "t": 3200, "id": "n2", "symbol": "ETH-USD", "confidence": 0.68, "suppressed": false,
+          "text": "ETH liquidity depth steady across top-5 venues; spread compression continues.",
+          "latencyMs": 388, "costUsd": 0.0039,
+          "trace": [ {"stage":"ingest","ms":15},{"stage":"normalize","ms":8},{"stage":"features","ms":37},{"stage":"infer","ms":205},{"stage":"guardrail","ms":11},{"stage":"synth","ms":98},{"stage":"deliver","ms":14} ] },
+        { "t": 5800, "id": "n3", "symbol": "BTC-USD", "confidence": 0.74, "suppressed": false,
+          "text": "Routine exchange inflow observed; historically correlated with low near-term dispersion.",
+          "latencyMs": 415, "costUsd": 0.0042,
+          "trace": [ {"stage":"ingest","ms":17},{"stage":"normalize","ms":9},{"stage":"features","ms":44},{"stage":"infer","ms":218},{"stage":"guardrail","ms":13},{"stage":"synth","ms":100},{"stage":"deliver","ms":14} ] },
+        { "t": 8300, "id": "n4", "symbol": "SOL-USD", "confidence": 0.69, "suppressed": false,
+          "text": "SOL showing gradual uptrend in 15m realized range; volume in line with 7-day average.",
+          "latencyMs": 395, "costUsd": 0.0040,
+          "trace": [ {"stage":"ingest","ms":16},{"stage":"normalize","ms":8},{"stage":"features","ms":39},{"stage":"infer","ms":208},{"stage":"guardrail","ms":12},{"stage":"synth","ms":98},{"stage":"deliver","ms":14} ] }
+      ]
+    },
+
+    "whale": {
+      "id": "whale",
+      "label": "Whale Alert",
+      "tagline": "Large on-chain transfer detected — heightened monitoring",
+      "accent": "violet",
+      "durationMs": 11000,
+      "systemHealth": { "status": "healthy", "uptimePct": 99.95, "cpuPct": 46, "memPct": 48, "queueDepth": 28, "instances": 7, "errorRatePct": 0.04 },
+      "shadowHealth": { "liveStatus": "healthy", "shadowStatus": "healthy", "parityPct": 98.9, "driftScore": 0.06, "replayLagMs": 240, "lastSyncSec": 6 },
+      "funnel": { "ingested": 1600, "filtered": 1500, "scored": 1450, "aboveThreshold": 600, "published": 580, "delivered": 575 },
+      "observability": { "rps": 58, "errorRatePct": 0.05, "p50Ms": 132, "p95Ms": 340, "p99Ms": 510, "activeTraces": 39,
+        "logs": [
+          "onchain.watcher: large-transfer rule fired (symbol=ETH-USD, size=12400)",
+          "guardrail: whale-alert priority lane engaged",
+          "synth: 580 squawks generated, avg 71 tokens"
+        ] },
+      "cost": { "perSquawkUsd": 0.0047, "tokensPerSquawk": 71, "monthlyProjectionUsd": 152.10, "trend": [0.0042, 0.0044, 0.0046, 0.0047, 0.0048, 0.0047] },
+      "events": [
+        { "t": 300,  "type": "flow",  "symbol": "ETH-USD", "text": "On-chain: 12,400 ETH moved to unknown wallet cluster", "severity": "warn" },
+        { "t": 1200, "type": "tick",  "symbol": "ETH-USD", "text": "ETH-USD tick $3,039.80 (-0.21%)", "severity": "info" },
+        { "t": 2300, "type": "flow",  "symbol": "ETH-USD", "text": "On-chain: destination wallet linked to known custodial cold storage", "severity": "info" },
+        { "t": 3500, "type": "news",  "symbol": "MKT",     "text": "News: Social chatter volume spikes around large ETH transfer", "severity": "warn" },
+        { "t": 4700, "type": "tick",  "symbol": "ETH-USD", "text": "ETH-USD tick $3,033.10 (-0.42%)", "severity": "info" },
+        { "t": 6000, "type": "flow",  "symbol": "BTC-USD", "text": "On-chain: 850 BTC consolidated from 4 addresses", "severity": "warn" },
+        { "t": 7300, "type": "tick",  "symbol": "BTC-USD", "text": "BTC-USD tick $63,201.40 (-0.10%)", "severity": "info" },
+        { "t": 8600, "type": "flow",  "symbol": "ETH-USD", "text": "On-chain: no further movement from watched cluster for 5 min", "severity": "info" },
+        { "t": 9900, "type": "tick",  "symbol": "ETH-USD", "text": "ETH-USD tick $3,036.40 (-0.31%)", "severity": "info" }
+      ],
+      "squawks": [
+        { "t": 700,  "id": "w1", "symbol": "ETH-USD", "confidence": 0.88, "suppressed": false,
+          "text": "Whale alert: 12.4k ETH transferred to an unattributed wallet cluster; monitoring for follow-on flow.",
+          "latencyMs": 430, "costUsd": 0.0048,
+          "trace": [ {"stage":"ingest","ms":14},{"stage":"normalize","ms":8},{"stage":"features","ms":46},{"stage":"infer","ms":232},{"stage":"guardrail","ms":15},{"stage":"synth","ms":102},{"stage":"deliver","ms":13} ] },
+        { "t": 2800, "id": "w2", "symbol": "ETH-USD", "confidence": 0.81, "suppressed": false,
+          "text": "Destination cluster now attributed to known custodial cold storage; lowers near-term uncertainty.",
+          "latencyMs": 401, "costUsd": 0.0045,
+          "trace": [ {"stage":"ingest","ms":13},{"stage":"normalize","ms":8},{"stage":"features","ms":40},{"stage":"infer","ms":218},{"stage":"guardrail","ms":13},{"stage":"synth","ms":97},{"stage":"deliver","ms":12} ] },
+        { "t": 6300, "id": "w3", "symbol": "BTC-USD", "confidence": 0.77, "suppressed": false,
+          "text": "Address consolidation pattern observed; historically precedes custody transfers rather than exchange deposits.",
+          "latencyMs": 418, "costUsd": 0.0046,
+          "trace": [ {"stage":"ingest","ms":15},{"stage":"normalize","ms":9},{"stage":"features","ms":43},{"stage":"infer","ms":222},{"stage":"guardrail","ms":14},{"stage":"synth","ms":101},{"stage":"deliver","ms":14} ] },
+        { "t": 9000, "id": "w4", "symbol": "ETH-USD", "confidence": 0.66, "suppressed": false,
+          "text": "Watched cluster dormant for 5+ minutes; alert priority stepped back down to routine.",
+          "latencyMs": 375, "costUsd": 0.0041,
+          "trace": [ {"stage":"ingest","ms":13},{"stage":"normalize","ms":7},{"stage":"features","ms":35},{"stage":"infer","ms":198},{"stage":"guardrail","ms":11},{"stage":"synth","ms":97},{"stage":"deliver","ms":14} ] }
+      ]
+    },
+
+    "volatile": {
+      "id": "volatile",
+      "label": "Volatility Spike",
+      "tagline": "Elevated dispersion — throughput and model load increase",
+      "accent": "amber",
+      "durationMs": 11000,
+      "systemHealth": { "status": "healthy", "uptimePct": 99.9, "cpuPct": 68, "memPct": 63, "queueDepth": 74, "instances": 9, "errorRatePct": 0.09 },
+      "shadowHealth": { "liveStatus": "healthy", "shadowStatus": "healthy", "parityPct": 97.8, "driftScore": 0.11, "replayLagMs": 410, "lastSyncSec": 9 },
+      "funnel": { "ingested": 4200, "filtered": 3600, "scored": 3400, "aboveThreshold": 1200, "published": 1150, "delivered": 1140 },
+      "observability": { "rps": 146, "errorRatePct": 0.11, "p50Ms": 168, "p95Ms": 460, "p99Ms": 690, "activeTraces": 88,
+        "logs": [
+          "autoscaler: scaled inference pool 6 -> 9 instances",
+          "features: rolling-window recompute rate +240%",
+          "synth: 1150 squawks generated, avg 58 tokens"
+        ] },
+      "cost": { "perSquawkUsd": 0.0044, "tokensPerSquawk": 58, "monthlyProjectionUsd": 410.60, "trend": [0.0039, 0.0041, 0.0043, 0.0045, 0.0046, 0.0044] },
+      "events": [
+        { "t": 200,  "type": "tick", "symbol": "BTC-USD", "text": "BTC-USD tick $62,880.20 (-0.95%)", "severity": "warn" },
+        { "t": 900,  "type": "tick", "symbol": "BTC-USD", "text": "BTC-USD tick $63,510.40 (+1.00%)", "severity": "warn" },
+        { "t": 1700, "type": "news", "symbol": "MKT",     "text": "News: Regulatory statement released, markets reacting", "severity": "warn" },
+        { "t": 2500, "type": "tick", "symbol": "ETH-USD", "text": "ETH-USD tick $2,981.10 (-1.80%)", "severity": "warn" },
+        { "t": 3300, "type": "tick", "symbol": "ETH-USD", "text": "ETH-USD tick $3,015.60 (+1.16%)", "severity": "warn" },
+        { "t": 4200, "type": "flow", "symbol": "SOL-USD", "text": "Derivatives: funding rate swings +/-0.04% within the hour", "severity": "warn" },
+        { "t": 5100, "type": "tick", "symbol": "SOL-USD", "text": "SOL-USD tick $137.40 (-2.40%)", "severity": "warn" },
+        { "t": 6000, "type": "tick", "symbol": "BTC-USD", "text": "BTC-USD tick $63,140.90 (-0.58%)", "severity": "info" },
+        { "t": 6900, "type": "news", "symbol": "MKT",     "text": "News: Volatility index reading elevated vs 30-day average", "severity": "warn" },
+        { "t": 7800, "type": "tick", "symbol": "ETH-USD", "text": "ETH-USD tick $3,002.30 (-0.44%)", "severity": "info" },
+        { "t": 8700, "type": "tick", "symbol": "SOL-USD", "text": "SOL-USD tick $139.90 (+1.82%)", "severity": "info" },
+        { "t": 9600, "type": "tick", "symbol": "BTC-USD", "text": "BTC-USD tick $63,290.10 (+0.24%)", "severity": "info" }
+      ],
+      "squawks": [
+        { "t": 600,  "id": "v1", "symbol": "BTC-USD", "confidence": 0.79, "suppressed": false,
+          "text": "BTC realized volatility jumps sharply intraday; dispersion now 2.3x the 7-day baseline.",
+          "latencyMs": 452, "costUsd": 0.0046,
+          "trace": [ {"stage":"ingest","ms":22},{"stage":"normalize","ms":11},{"stage":"features","ms":58},{"stage":"infer","ms":238},{"stage":"guardrail","ms":16},{"stage":"synth","ms":92},{"stage":"deliver","ms":15} ] },
+        { "t": 2100, "id": "v2", "symbol": "MKT", "confidence": 0.72, "suppressed": false,
+          "text": "Cross-asset correlation rising sharply following regulatory headline; broad repricing underway.",
+          "latencyMs": 470, "costUsd": 0.0048,
+          "trace": [ {"stage":"ingest","ms":24},{"stage":"normalize","ms":12},{"stage":"features","ms":61},{"stage":"infer","ms":245},{"stage":"guardrail","ms":17},{"stage":"synth","ms":95},{"stage":"deliver","ms":16} ] },
+        { "t": 3900, "id": "v3", "symbol": "ETH-USD", "confidence": 0.75, "suppressed": false,
+          "text": "ETH order book depth thinning at top-of-book; slippage sensitivity elevated for large clips.",
+          "latencyMs": 448, "costUsd": 0.0045,
+          "trace": [ {"stage":"ingest","ms":21},{"stage":"normalize","ms":10},{"stage":"features","ms":55},{"stage":"infer","ms":232},{"stage":"guardrail","ms":15},{"stage":"synth","ms":92},{"stage":"deliver","ms":14} ] },
+        { "t": 5400, "id": "v4", "symbol": "SOL-USD", "confidence": 0.7, "suppressed": false,
+          "text": "SOL funding rate oscillation widening; perp basis diverging from spot at fastest pace this week.",
+          "latencyMs": 441, "costUsd": 0.0044,
+          "trace": [ {"stage":"ingest","ms":20},{"stage":"normalize","ms":10},{"stage":"features","ms":53},{"stage":"infer","ms":228},{"stage":"guardrail","ms":14},{"stage":"synth","ms":90},{"stage":"deliver","ms":14} ] },
+        { "t": 7200, "id": "v5", "symbol": "MKT", "confidence": 0.68, "suppressed": false,
+          "text": "Volatility index reading eases slightly off session highs; dispersion still above baseline.",
+          "latencyMs": 430, "costUsd": 0.0043,
+          "trace": [ {"stage":"ingest","ms":19},{"stage":"normalize","ms":9},{"stage":"features","ms":49},{"stage":"infer","ms":222},{"stage":"guardrail","ms":14},{"stage":"synth","ms":90},{"stage":"deliver","ms":13} ] },
+        { "t": 9200, "id": "v6", "symbol": "BTC-USD", "confidence": 0.66, "suppressed": false,
+          "text": "BTC intraday range compresses back toward pre-spike levels as volumes normalize.",
+          "latencyMs": 402, "costUsd": 0.0041,
+          "trace": [ {"stage":"ingest","ms":17},{"stage":"normalize","ms":8},{"stage":"features","ms":44},{"stage":"infer","ms":210},{"stage":"guardrail","ms":12},{"stage":"synth","ms":88},{"stage":"deliver","ms":13} ] }
+      ]
+    },
+
+    "suppressed": {
+      "id": "suppressed",
+      "label": "Suppressed",
+      "tagline": "Guardrails actively withholding low-confidence & policy-blocked squawks",
+      "accent": "slate",
+      "durationMs": 11000,
+      "systemHealth": { "status": "healthy", "uptimePct": 99.94, "cpuPct": 40, "memPct": 45, "queueDepth": 19, "instances": 6, "errorRatePct": 0.03 },
+      "shadowHealth": { "liveStatus": "healthy", "shadowStatus": "healthy", "parityPct": 99.1, "driftScore": 0.04, "replayLagMs": 205, "lastSyncSec": 5 },
+      "funnel": { "ingested": 1300, "filtered": 1100, "scored": 1050, "aboveThreshold": 900, "published": 120, "delivered": 118 },
+      "observability": { "rps": 45, "errorRatePct": 0.02, "p50Ms": 121, "p95Ms": 305, "p99Ms": 470, "activeTraces": 26,
+        "logs": [
+          "guardrail: quiet-hours policy active 02:00-06:00 UTC",
+          "guardrail: 780 candidates withheld this window (confidence/duplicate/policy)",
+          "synth: 120 squawks generated, avg 60 tokens"
+        ] },
+      "cost": { "perSquawkUsd": 0.0040, "tokensPerSquawk": 60, "monthlyProjectionUsd": 51.20, "trend": [0.0040, 0.0040, 0.0039, 0.0040, 0.0041, 0.0040] },
+      "events": [
+        { "t": 300,  "type": "tick", "symbol": "BTC-USD", "text": "BTC-USD tick $63,180.30 (+0.02%)", "severity": "info" },
+        { "t": 1400, "type": "news", "symbol": "MKT",     "text": "Policy: quiet-hours window active (02:00-06:00 UTC)", "severity": "info" },
+        { "t": 2600, "type": "tick", "symbol": "ETH-USD", "text": "ETH-USD tick $3,040.90 (-0.03%)", "severity": "info" },
+        { "t": 3900, "type": "flow", "symbol": "SOL-USD", "text": "Low-confidence signal candidate generated, below publish threshold", "severity": "info" },
+        { "t": 5200, "type": "tick", "symbol": "BTC-USD", "text": "BTC-USD tick $63,190.60 (+0.03%)", "severity": "info" },
+        { "t": 6500, "type": "flow", "symbol": "ETH-USD", "text": "Duplicate-suppression window active for repeated near-identical signal", "severity": "info" },
+        { "t": 7800, "type": "tick", "symbol": "SOL-USD", "text": "SOL-USD tick $141.10 (+0.11%)", "severity": "info" },
+        { "t": 9100, "type": "news", "symbol": "MKT",     "text": "Policy: 780 candidates withheld this window by guardrail", "severity": "info" }
+      ],
+      "squawks": [
+        { "t": 700,  "id": "s1", "symbol": "SOL-USD", "confidence": 0.42, "suppressed": true, "suppressReason": "confidence 0.42 below 0.65 publish threshold",
+          "text": "(withheld) Minor SOL range contraction noted; signal confidence below publish threshold.",
+          "latencyMs": 210, "costUsd": 0.0018,
+          "trace": [ {"stage":"ingest","ms":14},{"stage":"normalize","ms":8},{"stage":"features","ms":36},{"stage":"infer","ms":140},{"stage":"guardrail","ms":12,"blocked":true} ] },
+        { "t": 2000, "id": "s2", "symbol": "MKT", "confidence": 0.58, "suppressed": true, "suppressReason": "quiet-hours policy 02:00-06:00 UTC",
+          "text": "(withheld) Routine macro-quiet observation generated during scheduled quiet-hours window.",
+          "latencyMs": 198, "costUsd": 0.0017,
+          "trace": [ {"stage":"ingest","ms":13},{"stage":"normalize","ms":7},{"stage":"features","ms":33},{"stage":"infer","ms":130},{"stage":"guardrail","ms":15,"blocked":true} ] },
+        { "t": 3500, "id": "s3", "symbol": "ETH-USD", "confidence": 0.61, "suppressed": true, "suppressReason": "duplicate suppression (98% similar to squawk emitted 4m ago)",
+          "text": "(withheld) Near-duplicate of a recently published ETH liquidity observation.",
+          "latencyMs": 205, "costUsd": 0.0018,
+          "trace": [ {"stage":"ingest","ms":13},{"stage":"normalize","ms":8},{"stage":"features","ms":34},{"stage":"infer","ms":133},{"stage":"guardrail","ms":13,"blocked":true} ] },
+        { "t": 5600, "id": "s4", "symbol": "BTC-USD", "confidence": 0.77, "suppressed": false,
+          "text": "BTC price action remains within a tight 30-minute range; low-noise session so far.",
+          "latencyMs": 398, "costUsd": 0.0040,
+          "trace": [ {"stage":"ingest","ms":16},{"stage":"normalize","ms":8},{"stage":"features","ms":39},{"stage":"infer","ms":210},{"stage":"guardrail","ms":12},{"stage":"synth","ms":98},{"stage":"deliver","ms":15} ] },
+        { "t": 7900, "id": "s5", "symbol": "SOL-USD", "confidence": 0.39, "suppressed": true, "suppressReason": "confidence 0.39 below 0.65 publish threshold",
+          "text": "(withheld) Marginal SOL tick observation, insufficient confidence for publication.",
+          "latencyMs": 190, "costUsd": 0.0016,
+          "trace": [ {"stage":"ingest","ms":12},{"stage":"normalize","ms":7},{"stage":"features","ms":31},{"stage":"infer","ms":125},{"stage":"guardrail","ms":11,"blocked":true} ] }
+      ]
+    },
+
+    "degraded": {
+      "id": "degraded",
+      "label": "Degraded / Outage",
+      "tagline": "Feed adapter fault — shadow engine isolates the blast radius",
+      "accent": "red",
+      "durationMs": 11000,
+      "systemHealth": { "status": "degraded", "uptimePct": 99.2, "cpuPct": 81, "memPct": 77, "queueDepth": 340, "instances": 9, "errorRatePct": 4.8 },
+      "shadowHealth": { "liveStatus": "degraded", "shadowStatus": "healthy", "parityPct": 88.3, "driftScore": 0.34, "replayLagMs": 2100, "lastSyncSec": 41 },
+      "funnel": { "ingested": 1100, "filtered": 700, "scored": 500, "aboveThreshold": 150, "published": 60, "delivered": 40 },
+      "observability": { "rps": 21, "errorRatePct": 4.8, "p50Ms": 240, "p95Ms": 980, "p99Ms": 1650, "activeTraces": 63,
+        "logs": [
+          "adapter.kraken: connection reset, retrying (attempt 3/5)",
+          "circuit-breaker: live engine tripped, routing reads to shadow engine",
+          "delivery: 20 squawks queued, retry backoff engaged"
+        ] },
+      "cost": { "perSquawkUsd": 0.0052, "tokensPerSquawk": 65, "monthlyProjectionUsd": 61.90, "trend": [0.0041, 0.0044, 0.0048, 0.0051, 0.0053, 0.0052] },
+      "events": [
+        { "t": 200,  "type": "system", "symbol": "SYS", "text": "Adapter fault: kraken feed connection reset", "severity": "error" },
+        { "t": 1200, "type": "system", "symbol": "SYS", "text": "Retry attempt 1/5 failed, backing off 2s", "severity": "error" },
+        { "t": 2400, "type": "system", "symbol": "SYS", "text": "Circuit breaker tripped on live engine; failover to shadow engine", "severity": "error" },
+        { "t": 3600, "type": "tick",   "symbol": "BTC-USD", "text": "BTC-USD tick (shadow engine) $63,050.10 (stale +38s)", "severity": "warn" },
+        { "t": 4800, "type": "system", "symbol": "SYS", "text": "Retry attempt 3/5 succeeded partially, one channel restored", "severity": "warn" },
+        { "t": 6000, "type": "system", "symbol": "SYS", "text": "Delivery queue backlog at 340, applying backpressure", "severity": "error" },
+        { "t": 7200, "type": "tick",   "symbol": "ETH-USD", "text": "ETH-USD tick (shadow engine) $3,030.40 (stale +22s)", "severity": "warn" },
+        { "t": 8400, "type": "system", "symbol": "SYS", "text": "kraken feed fully restored; reconciling live vs shadow state", "severity": "info" },
+        { "t": 9600, "type": "system", "symbol": "SYS", "text": "Circuit breaker reset; live engine resumes primary role", "severity": "info" }
+      ],
+      "squawks": [
+        { "t": 500,  "id": "d1", "symbol": "SYS", "confidence": 0.9, "suppressed": false,
+          "text": "Live feed adapter fault detected on Kraken channel; shadow engine automatically assumes read traffic.",
+          "latencyMs": 610, "costUsd": 0.0050,
+          "trace": [ {"stage":"ingest","ms":40},{"stage":"normalize","ms":18},{"stage":"features","ms":52},{"stage":"infer","ms":320},{"stage":"guardrail","ms":22},{"stage":"synth","ms":130},{"stage":"deliver","ms":28} ] },
+        { "t": 2700, "id": "d2", "symbol": "SYS", "confidence": 0.86, "suppressed": false,
+          "text": "Circuit breaker tripped: live/shadow parity fell below 90%; routing prioritizes shadow-engine reads for continuity.",
+          "latencyMs": 640, "costUsd": 0.0053,
+          "trace": [ {"stage":"ingest","ms":42},{"stage":"normalize","ms":19},{"stage":"features","ms":55},{"stage":"infer","ms":334},{"stage":"guardrail","ms":24},{"stage":"synth","ms":136},{"stage":"deliver","ms":30} ] },
+        { "t": 5100, "id": "d3", "symbol": "SYS", "confidence": 0.7, "suppressed": false,
+          "text": "Delivery backlog building; backpressure engaged to protect downstream subscribers.",
+          "latencyMs": 720, "costUsd": 0.0055,
+          "trace": [ {"stage":"ingest","ms":48},{"stage":"normalize","ms":21},{"stage":"features","ms":60},{"stage":"infer","ms":360},{"stage":"guardrail","ms":26},{"stage":"synth","ms":175},{"stage":"deliver","ms":30} ] },
+        { "t": 8700, "id": "d4", "symbol": "SYS", "confidence": 0.92, "suppressed": false,
+          "text": "Feed adapter fully restored; live and shadow engines reconciled and back in parity.",
+          "latencyMs": 455, "costUsd": 0.0044,
+          "trace": [ {"stage":"ingest","ms":22},{"stage":"normalize","ms":10},{"stage":"features","ms":42},{"stage":"infer","ms":238},{"stage":"guardrail","ms":15},{"stage":"synth","ms":110},{"stage":"deliver","ms":18} ] }
+      ]
+    }
+  }
+}

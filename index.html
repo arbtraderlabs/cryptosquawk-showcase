@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoSquawk — Live Showcase | ArbTrader Labs</title>
+<meta name="description" content="CryptoSquawk showcase: an AI market-commentary squawk box with shadow-mode safety, guardrails, and full observability. Synthetic demo data only — not financial advice.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="logo-mark" aria-hidden="true">◎</span>
+    <div class="brand-text">
+      <span class="brand-name">CryptoSquawk</span>
+      <span class="brand-sub">by ArbTrader Labs</span>
+    </div>
+  </div>
+
+  <div class="topbar__status" role="status" aria-live="polite">
+    <span class="status-dot" id="connDot" data-state="live" aria-hidden="true"></span>
+    <span id="connLabel">Live feed connected</span>
+    <span class="topbar__clock" id="clock">--:--:--</span>
+  </div>
+
+  <div class="topbar__controls">
+    <label class="scenario-picker">
+      <span class="visually-hidden">Scenario</span>
+      <select id="scenarioSelect" aria-label="Select scenario">
+        <option value="normal">Normal Market</option>
+        <option value="whale">Whale Alert</option>
+        <option value="volatile">Volatility Spike</option>
+        <option value="suppressed">Suppressed</option>
+        <option value="degraded">Degraded / Outage</option>
+      </select>
+    </label>
+
+    <button id="showcaseToggle" class="btn btn--accent" type="button" aria-pressed="false">
+      ▶ Showcase Mode
+    </button>
+  </div>
+</header>
+
+<!-- Showcase progress bar (loop indicator) -->
+<div class="showcase-bar" id="showcaseBar" aria-hidden="true">
+  <div class="showcase-bar__fill" id="showcaseBarFill"></div>
+  <span class="showcase-bar__label" id="showcaseBarLabel"></span>
+</div>
+
+<!-- ============ DISCLAIMER STRIP ============ -->
+<div class="disclaimer" role="note">
+  <strong>Synthetic demo</strong> — all market data, alerts and commentary on this page are fabricated for illustration.
+  Nothing here is financial advice or a trading recommendation. No live API, backend or real accounts are involved.
+</div>
+
+  <!-- ============ FULL-WIDTH PIPELINE ============ -->
+  <section class="panel panel--pipeline panel--full">
+    <div class="panel__head">
+      <h2>Processing Pipeline</h2>
+      <span class="pipeline-hint">Click a squawk trace below to replay its exact path through the pipeline</span>
+    </div>
+    <div class="pipeline-wrap">
+      <svg id="pipelineSvg" viewBox="0 0 920 160" role="img" aria-label="CryptoSquawk processing pipeline diagram">
+        <!-- populated by js/pipeline.js -->
+      </svg>
+    </div>
+  </section>
+
+<main id="main" class="layout">
+
+  <!-- ============ LEFT COLUMN ============ -->
+  <section class="col col--left">
+
+    <div class="panel panel--events">
+      <div class="panel__head">
+        <h2>Event Stream</h2>
+        <span class="scenario-chip" id="scenarioChipEvents">Normal Market</span>
+      </div>
+      <ul class="event-list" id="eventList" aria-live="polite"></ul>
+    </div>
+
+    <div class="panel panel--funnel">
+      <div class="panel__head">
+        <h2>Signal Funnel</h2>
+        <span class="scenario-chip" id="scenarioChipFunnel">Normal Market</span>
+      </div>
+      <div class="funnel" id="funnel"></div>
+    </div>
+
+  </section>
+
+  <!-- ============ CENTER COLUMN ============ -->
+  <section class="col col--center">
+
+    <div class="panel panel--squawks">
+      <div class="panel__head">
+        <h2>AI Squawk Output</h2>
+        <span class="squawk-count" id="squawkCount">0 published</span>
+      </div>
+      <ul class="squawk-list" id="squawkList" aria-live="polite"></ul>
+      <p class="panel-footnote">Commentary is descriptive market observation only — never a buy/sell instruction. Click any entry for its full decision trace.</p>
+    </div>
+
+  </section>
+
+  <!-- ============ RIGHT COLUMN ============ -->
+  <section class="col col--right">
+
+    <div class="panel panel--health">
+      <div class="panel__head"><h2>System Health</h2></div>
+      <dl class="metric-grid" id="systemHealth"></dl>
+    </div>
+
+    <div class="panel panel--shadow">
+      <div class="panel__head"><h2>Shadow-Mode Health</h2></div>
+      <div class="shadow-compare" id="shadowHealth"></div>
+    </div>
+
+    <div class="panel panel--observability">
+      <div class="panel__head"><h2>Observability</h2></div>
+      <div class="obs-grid" id="obsGrid"></div>
+      <ul class="log-lines" id="logLines"></ul>
+    </div>
+
+    <div class="panel panel--latency">
+      <div class="panel__head"><h2>Latency (ms)</h2></div>
+      <div class="latency-bars" id="latencyBars"></div>
+    </div>
+
+    <div class="panel panel--cost">
+      <div class="panel__head"><h2>Inference Cost</h2></div>
+      <div class="cost-grid" id="costGrid"></div>
+      <svg class="cost-sparkline" id="costSparkline" viewBox="0 0 200 50" preserveAspectRatio="none" aria-hidden="true"></svg>
+    </div>
+
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>CryptoSquawk showcase — a clean-room, static, public demo by ArbTrader Labs. No production systems, credentials, or proprietary code are represented. <a href="https://github.com" target="_blank" rel="noopener">View source</a></p>
+</footer>
+
+<!-- ============ TRACE MODAL ============ -->
+<div class="modal-backdrop" id="traceModalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="traceModalTitle" id="traceModal">
+    <button class="modal__close" id="traceModalClose" aria-label="Close trace detail">✕</button>
+    <h3 id="traceModalTitle">Squawk Trace</h3>
+    <p class="modal__symbol" id="traceModalSymbol"></p>
+    <blockquote class="modal__text" id="traceModalText"></blockquote>
+    <div class="modal__meta" id="traceModalMeta"></div>
+    <ol class="trace-steps" id="traceSteps"></ol>
+  </div>
+</div>
+
+<script src="js/data.js" defer></script>
+<script src="js/pipeline.js" defer></script>
+<script src="js/charts.js" defer></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>
